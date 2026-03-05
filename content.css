@@ -1,0 +1,6 @@
+/* Hide the LinkedIn Home nav item in all its variants */
+li:has(button[data-view-name="navigation-homepage"]),
+li:has(a[href*="/feed/"]),
+li:has(.global-nav__primary-link-text[title="Home"]) {
+  display: none !important;
+}
