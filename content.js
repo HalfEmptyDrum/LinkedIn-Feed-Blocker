@@ -1,3 +1,8 @@
+// Redirect away from the feed immediately
+if (location.pathname === '/feed' || location.pathname === '/feed/') {
+  location.replace('https://www.linkedin.com/mynetwork/');
+}
+
 function hideHomeButton() {
   const selectors = [
     'button[data-view-name="navigation-homepage"]',
@@ -15,18 +20,7 @@ function hideHomeButton() {
   }
 }
 
-function blockFeed() {
-  if (!location.pathname.startsWith('/feed')) return;
-  const feed = document.querySelector('.scaffold-finite-scroll, [data-view-name="feed-full-content"], main');
-  if (feed) feed.style.visibility = 'hidden';
-}
+hideHomeButton();
 
-function run() {
-  hideHomeButton();
-  blockFeed();
-}
-
-run();
-
-const observer = new MutationObserver(run);
+const observer = new MutationObserver(hideHomeButton);
 observer.observe(document.body, { childList: true, subtree: true });
