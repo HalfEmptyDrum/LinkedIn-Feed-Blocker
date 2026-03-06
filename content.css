@@ -1,6 +1,16 @@
 /* Hide the LinkedIn Home nav item in all its variants */
 li:has(button[data-view-name="navigation-homepage"]),
 li:has(a[href*="/feed/"]),
-li:has(.global-nav__primary-link-text[title="Home"]) {
+li:has(a[href$="/feed"]),
+li:has(.global-nav__primary-link-text[title="Home"]),
+li:has(a[data-link-to*="/feed"]),
+li:has(a[aria-label*="Home"]) {
+  display: none !important;
+}
+
+/* Hide notification badge/dot on the home button if parent hiding fails */
+.global-nav__primary-items a[href*="/feed"] .notification-badge,
+.global-nav__primary-items a[href*="/feed"] .notification-badge__count,
+.global-nav__primary-items a[href*="/feed"] .notification-badge--show {
   display: none !important;
 }
