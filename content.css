@@ -1,8 +1,7 @@
-/* Hide the LinkedIn Home nav item - use high specificity + multiple methods */
-li.global-nav__primary-item:has(a[href*="/feed/"]),
-li.global-nav__primary-item:has(a[href$="/feed"]),
-li.global-nav__primary-item:has(.global-nav__primary-link-text[title="Home"]),
-li.global-nav__primary-item:has(button[data-view-name="navigation-homepage"]) {
+/* Hide nav items containing a link to /feed - works without :has() via JS fallback */
+/* :has() requires Chrome 105+, JS handles older versions */
+li:has(> a[href*="/feed/"]),
+li:has(> a[href$="/feed"]) {
   display: none !important;
   visibility: hidden !important;
   width: 0 !important;
@@ -10,9 +9,4 @@ li.global-nav__primary-item:has(button[data-view-name="navigation-homepage"]) {
   overflow: hidden !important;
   padding: 0 !important;
   margin: 0 !important;
-}
-
-/* Also hide the notification badge inside the home link */
-.artdeco-notification-badge:has(.notification-badge--show) {
-  display: none !important;
 }
