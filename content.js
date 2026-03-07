@@ -15,7 +15,7 @@ function hideHomeButton() {
   for (const sel of selectors) {
     document.querySelectorAll(sel).forEach(el => {
       const li = el.closest('li');
-      if (li) li.style.display = 'none';
+      if (li) li.style.cssText = 'display:none!important;visibility:hidden!important;width:0!important;height:0!important;overflow:hidden!important;';
     });
   }
 }
