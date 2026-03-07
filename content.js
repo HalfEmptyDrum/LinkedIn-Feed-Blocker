@@ -4,28 +4,27 @@ if (location.pathname === '/feed' || location.pathname === '/feed/') {
 }
 
 function hideHomeButton() {
-  const selectors = [
-    'button[data-view-name="navigation-homepage"]',
-    'a[href*="/feed/"]',
-    'a[href$="/feed"]',
-    '.global-nav__primary-link-text[title="Home"]',
-    'a[data-link-to*="/feed"]',
-    'a[aria-label*="Home"]'
-  ];
-  for (const sel of selectors) {
-    document.querySelectorAll(sel).forEach(el => {
-      const li = el.closest('li');
-      if (li) li.style.cssText = 'display:none!important;visibility:hidden!important;width:0!important;height:0!important;overflow:hidden!important;';
-    });
-  }
+  // Find all links pointing to the feed - this is the only stable identifier
+  document.querySelectorAll('a[href*="/feed"]').forEach(a => {
+    try {
+      var url = new URL(a.href, location.origin);
+    } catch (e) {
+      return;
+    }
+    // Only match /feed or /feed/ exactly, not /feedback etc.
+    if (url.pathname !== '/feed' && url.pathname !== '/feed/') return;
+    // Walk up to the closest list item and hide it
+    var li = a.closest('li');
+    if (li) li.style.cssText = 'display:none!important;visibility:hidden!important;width:0!important;height:0!important;overflow:hidden!important;';
+  });
 }
 
-// Wait for document.body to exist before observing (script runs at document_start)
+// Wait for document.body to exist (script runs at document_start)
 if (document.body) {
   hideHomeButton();
   new MutationObserver(hideHomeButton).observe(document.body, { childList: true, subtree: true });
 } else {
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', function() {
     hideHomeButton();
     new MutationObserver(hideHomeButton).observe(document.body, { childList: true, subtree: true });
   });
