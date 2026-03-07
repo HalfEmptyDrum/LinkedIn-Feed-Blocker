@@ -1,3 +1,8 @@
+// Redirect away from the feed immediately
+if (location.pathname === '/feed' || location.pathname === '/feed/') {
+  location.replace('https://www.linkedin.com/mynetwork/');
+}
+
 function hideHomeButton() {
   const selectors = [
     'button[data-view-name="navigation-homepage"]',
@@ -15,18 +20,13 @@ function hideHomeButton() {
   }
 }
 
-function blockFeed() {
-  if (!location.pathname.startsWith('/feed')) return;
-  const feed = document.querySelector('.scaffold-finite-scroll, [data-view-name="feed-full-content"], main');
-  if (feed) feed.style.visibility = 'hidden';
-}
-
-function run() {
+// Wait for document.body to exist before observing (script runs at document_start)
+if (document.body) {
   hideHomeButton();
-  blockFeed();
+  new MutationObserver(hideHomeButton).observe(document.body, { childList: true, subtree: true });
+} else {
+  document.addEventListener('DOMContentLoaded', () => {
+    hideHomeButton();
+    new MutationObserver(hideHomeButton).observe(document.body, { childList: true, subtree: true });
+  });
 }
-
-run();
-
-const observer = new MutationObserver(run);
-observer.observe(document.body, { childList: true, subtree: true });
